@@ -17,13 +17,13 @@ A lightweight, customizable video ad player SDK for React applications. Display 
 ## Installation
 
 ```bash
-npm install @your-org/video-ad-player
+npm install video-ad-player-sdk
 ```
 
 ## Quick Start
 
 ```typescript
-import { createVideoAdPlayer } from '@your-org/video-ad-player';
+import { createVideoAdPlayer } from 'video-ad-player-sdk';
 
 // Initialize with YouTube video
 const player = createVideoAdPlayer({
@@ -85,7 +85,7 @@ player.close();
 ### YouTube Video
 
 ```typescript
-import { createVideoAdPlayer } from '@your-org/video-ad-player';
+import { createVideoAdPlayer } from 'video-ad-player-sdk';
 
 const player = createVideoAdPlayer({
   videoId: 'dQw4w9WgXcQ',
@@ -188,7 +188,7 @@ interface VideoAdPlayerInstance {
 You can also use the VideoAdPlayer as a React component:
 
 ```tsx
-import { VideoAdPlayer } from '@your-org/video-ad-player';
+import { VideoAdPlayer } from 'video-ad-player-sdk';
 
 function App() {
   return (
@@ -221,7 +221,7 @@ import {
   VideoAdPlayerInstance,
   PlayerPosition,
   PlayerSize
-} from '@your-org/video-ad-player';
+} from 'video-ad-player-sdk';
 ```
 
 ## License

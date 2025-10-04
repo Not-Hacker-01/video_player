@@ -227,12 +227,12 @@ function App() {
             <div className="space-y-4">
               <div>
                 <div className="text-slate-400 text-sm mb-2">Install via npm</div>
-                <code className="text-green-400">npm install @your-org/video-ad-player</code>
+                <code className="text-green-400">npm install video-ad-player-sdk</code>
               </div>
               <div>
                 <div className="text-slate-400 text-sm mb-2">Import and use</div>
                 <pre className="text-blue-400 text-sm">
-{`import { createVideoAdPlayer } from '@your-org/video-ad-player';
+{`import { createVideoAdPlayer } from 'video-ad-player-sdk';
 
 const player = createVideoAdPlayer({
   videoId: 'dQw4w9WgXcQ',
