@@ -6,9 +6,9 @@ export const getSizeValues = (size: PlayerSize, customWidth?: number, customHeig
   }
 
   const sizes = {
-    small: { width: 320, height: 180 },
-    medium: { width: 480, height: 270 },
-    large: { width: 640, height: 360 },
+    small: { width: 200, height: 360 },
+    medium: { width: 280, height: 500 },
+    large: { width: 360, height: 640 },
   };
 
   return sizes[size as keyof typeof sizes] || sizes.medium;

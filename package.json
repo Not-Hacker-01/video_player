@@ -1,6 +1,6 @@
 {
   "name": "video-ad-player-sdk",
-  "version": "1.0.0",
+  "version": "2.3.0",
   "description": "A powerful, customizable video ad player SDK for React applications with support for YouTube, direct URLs, and HLS streams",
   "type": "module",
   "main": "./dist/index.js",
@@ -9,8 +9,10 @@
   "exports": {
     ".": {
       "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
       "types": "./dist/index.d.ts"
     },
+    "./vanilla": "./dist/vanilla.js",
     "./styles.css": "./dist/index.css"
   },
   "files": [
@@ -32,24 +34,27 @@
     "closeable",
     "video-ads"
   ],
-  "author": "Your Name <your.email@example.com>",
+  "author": "Govind <govind04542@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/video-ad-player-sdk.git"
+    "url": "https://github.com/stupaprateek/video-ad-player-sdk.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/video-ad-player-sdk/issues"
+    "url": "https://github.com/stupaprateek/video-ad-player-sdk/issues"
   },
-  "homepage": "https://github.com/yourusername/video-ad-player-sdk#readme",
+  "homepage": "https://github.com/stupaprateek/video-ad-player-sdk#readme",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "build:lib": "tsc -p tsconfig.lib.json && vite build --mode library",
+    "build:vanilla": "vite build --mode vanilla",
+    "build:all": "npm run build:lib && npm run build:vanilla",
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
-    "prepublishOnly": "npm run typecheck && npm run build:lib"
+    "prepublishOnly": "npm run typecheck && npm run build:all",
+    "publish": "npm run build:lib && npm publish"
   },
   "peerDependencies": {
     "react": "^18.0.0",

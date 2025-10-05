@@ -5,7 +5,10 @@
     "declaration": true,
     "declarationDir": "./dist",
     "emitDeclarationOnly": true,
-    "noEmit": false
+    "noEmit": false,
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "src/sdk/**/*",

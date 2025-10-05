@@ -91,4 +91,3 @@ export const createVideoAdPlayer = (config: VideoAdPlayerConfig): VideoAdPlayerI
 
 export { VideoAdSDK, VideoAdPlayer };
 export * from '../types';
-export default VideoAdSDK;

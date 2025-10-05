@@ -10,8 +10,8 @@ function App() {
   const demos = [
     {
       id: 'youtube-bottom-right',
-      title: 'YouTube Video - Bottom Right',
-      description: 'Standard YouTube ad in bottom right corner',
+      title: 'YouTube Reel - Bottom Right',
+      description: 'YouTube reel in bottom right corner (reels format)',
       code: `createVideoAdPlayer({
   videoId: 'dQw4w9WgXcQ',
   position: 'bottom-right',
@@ -30,8 +30,8 @@ function App() {
     },
     {
       id: 'video-bottom-left',
-      title: 'Direct Video - Bottom Left',
-      description: 'MP4 video in bottom left corner',
+      title: 'Video Reel - Bottom Left',
+      description: 'MP4 reel in bottom left corner (reels format)',
       code: `createVideoAdPlayer({
   videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
   position: 'bottom-left',
