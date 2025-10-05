@@ -257,6 +257,204 @@ class VideoAdPlayerVanilla {
   }
 }
 
+// Web Component for HTML tag usage
+class VideoAdPlayerSDK extends HTMLElement {
+  constructor() {
+    super();
+    this.player = null;
+    this.observer = null;
+  }
+
+  static get observedAttributes() {
+    return [
+      'videoid', 'playbackid', 'videourl', 'position', 'size', 
+      'width', 'height', 'muted', 'closeable', 'zindex'
+    ];
+  }
+
+  connectedCallback() {
+    this.initPlayer();
+    this.setupIntersectionObserver();
+  }
+
+  disconnectedCallback() {
+    if (this.player) {
+      this.player.close();
+    }
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue !== newValue && this.player) {
+      // Reinitialize player if key attributes change
+      this.player.close();
+      this.initPlayer();
+    }
+  }
+
+  getConfig() {
+    const config = {};
+    
+    // Parse videoId (YouTube)
+    if (this.getAttribute('videoid')) {
+      config.videoId = this.getAttribute('videoid');
+    }
+    
+    // Parse playbackId (Mux/HLS)
+    if (this.getAttribute('playbackid')) {
+      config.playbackId = this.getAttribute('playbackid');
+    }
+    
+    // Parse videoUrl (Direct URL)
+    if (this.getAttribute('videourl')) {
+      config.videoUrl = this.getAttribute('videourl');
+    }
+    
+    // Parse position
+    if (this.getAttribute('position')) {
+      config.position = this.parsePosition(this.getAttribute('position'));
+    }
+    
+    // Parse size
+    if (this.getAttribute('size')) {
+      config.size = this.getAttribute('size');
+    }
+    
+    // Parse dimensions
+    if (this.getAttribute('width')) {
+      config.width = parseInt(this.getAttribute('width'));
+    }
+    
+    if (this.getAttribute('height')) {
+      config.height = parseInt(this.getAttribute('height'));
+    }
+    
+    // Parse boolean attributes
+    if (this.hasAttribute('muted')) {
+      config.muted = this.getAttribute('muted') !== 'false';
+    }
+    
+    if (this.hasAttribute('closeable')) {
+      config.closeable = this.getAttribute('closeable') !== 'false';
+    }
+    
+    // Parse zIndex
+    if (this.getAttribute('zindex')) {
+      config.zIndex = parseInt(this.getAttribute('zindex'));
+    }
+
+    // Add event handlers
+    config.onClose = () => {
+      this.dispatchEvent(new CustomEvent('close'));
+    };
+    
+    config.onError = (error) => {
+      this.dispatchEvent(new CustomEvent('error', { detail: error }));
+    };
+
+    return config;
+  }
+
+  parsePosition(position) {
+    // Convert user-friendly position to internal format
+    const positionMap = {
+      'top left': 'top-left',
+      'top right': 'top-right', 
+      'bottom left': 'bottom-left',
+      'bottom right': 'bottom-right',
+      'right bottom': 'bottom-right',
+      'left bottom': 'bottom-left',
+      'right top': 'top-right',
+      'left top': 'top-left',
+      'center': 'center'
+    };
+    
+    return positionMap[position.toLowerCase()] || position;
+  }
+
+  initPlayer() {
+    const config = this.getConfig();
+    
+    // Validate that at least one video source is provided
+    if (!config.videoId && !config.playbackId && !config.videoUrl) {
+      console.error('VideoAdPlayerSDK: No video source provided. Please add videoid, playbackid, or videourl attribute.');
+      return;
+    }
+
+    try {
+      this.player = new VideoAdPlayerVanilla(config);
+      
+      // Dispatch ready event
+      this.dispatchEvent(new CustomEvent('ready', { 
+        detail: { player: this.player } 
+      }));
+      
+    } catch (error) {
+      console.error('VideoAdPlayerSDK initialization error:', error);
+      this.dispatchEvent(new CustomEvent('error', { detail: error }));
+    }
+  }
+
+  setupIntersectionObserver() {
+    // Optional: Only show player when element is in viewport
+    if ('IntersectionObserver' in window) {
+      this.observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && this.player) {
+            this.player.play();
+          } else if (this.player) {
+            this.player.pause();
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      this.observer.observe(this);
+    }
+  }
+
+  // Public API methods
+  play() {
+    if (this.player) {
+      this.player.play();
+    }
+  }
+
+  pause() {
+    if (this.player) {
+      this.player.pause();
+    }
+  }
+
+  close() {
+    if (this.player) {
+      this.player.close();
+    }
+  }
+
+  setVolume(volume) {
+    if (this.player) {
+      this.player.setVolume(volume);
+    }
+  }
+
+  seek(time) {
+    if (this.player) {
+      this.player.seek(time);
+    }
+  }
+
+  getPlayer() {
+    return this.player;
+  }
+}
+
+// Register the custom element
+if (!customElements.get('video-ad-player-sdk')) {
+  customElements.define('video-ad-player-sdk', VideoAdPlayerSDK);
+}
+
 // Global function for easy HTML usage
 window.createVideoAdPlayer = function(config) {
   return new VideoAdPlayerVanilla(config);
@@ -270,4 +468,5 @@ if (typeof module !== 'undefined' && module.exports) {
 if (typeof exports !== 'undefined') {
   exports.VideoAdPlayerVanilla = VideoAdPlayerVanilla;
   exports.createVideoAdPlayer = window.createVideoAdPlayer;
+  exports.VideoAdPlayerSDK = VideoAdPlayerSDK;
 }

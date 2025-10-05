@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Ad Player SDK - Web Component Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        .demo-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 6px;
+        }
+
+        .demo-section h2 {
+            margin-top: 0;
+            color: #555;
+        }
+
+        .code {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .controls {
+            margin: 15px 0;
+        }
+
+        button {
+            background: #007cba;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #005a87;
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎥 Video Ad Player SDK - Web Component Test</h1>
+        
+        <div class="demo-section">
+            <h2>Test 1: YouTube Video (Bottom Right)</h2>
+            <div class="code">
+&lt;video-ad-player-sdk videoid="HfUGeWXS-bE" position="bottom right" size="medium"&gt;&lt;/video-ad-player-sdk&gt;
+            </div>
+            <div class="controls">
+                <button onclick="playPlayer1()">Play</button>
+                <button onclick="pausePlayer1()">Pause</button>
+                <button onclick="closePlayer1()">Close</button>
+            </div>
+            <div id="status1" class="status success">✅ Player loaded successfully</div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Test 2: Direct Video URL (Top Left)</h2>
+            <div class="code">
+&lt;video-ad-player-sdk videourl="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" position="top left" size="small"&gt;&lt;/video-ad-player-sdk&gt;
+            </div>
+            <div class="controls">
+                <button onclick="playPlayer2()">Play</button>
+                <button onclick="pausePlayer2()">Pause</button>
+                <button onclick="closePlayer2()">Close</button>
+            </div>
+            <div id="status2" class="status success">✅ Player loaded successfully</div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Test 3: Center Position with Custom Size</h2>
+            <div class="code">
+&lt;video-ad-player-sdk videoid="jNQXAC9IVRw" position="center" width="400" height="225"&gt;&lt;/video-ad-player-sdk&gt;
+            </div>
+            <div class="controls">
+                <button onclick="playPlayer3()">Play</button>
+                <button onclick="pausePlayer3()">Pause</button>
+                <button onclick="closePlayer3()">Close</button>
+            </div>
+            <div id="status3" class="status success">✅ Player loaded successfully</div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Test 4: Multiple Players (Different Positions)</h2>
+            <p>This demonstrates that multiple players can work simultaneously:</p>
+            <div class="code">
+&lt;video-ad-player-sdk videoid="dQw4w9WgXcQ" position="bottom left" size="small"&gt;&lt;/video-ad-player-sdk&gt;
+&lt;video-ad-player-sdk videoid="9bZkp7q19f0" position="top right" size="small"&gt;&lt;/video-ad-player-sdk&gt;
+            </div>
+            <div class="controls">
+                <button onclick="playPlayer4()">Play Left</button>
+                <button onclick="playPlayer5()">Play Right</button>
+                <button onclick="pauseAllPlayers()">Pause All</button>
+            </div>
+            <div id="status4" class="status success">✅ Multiple players loaded successfully</div>
+        </div>
+    </div>
+
+    <!-- Include the Video Ad Player SDK -->
+    <script src="./dist/vanilla.iife.js"></script>
+
+    <!-- Test Players -->
+    <video-ad-player-sdk id="player1" videoid="HfUGeWXS-bE" position="bottom right" size="medium"></video-ad-player-sdk>
+    
+    <video-ad-player-sdk id="player2" videourl="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" position="top left" size="small"></video-ad-player-sdk>
+    
+    <video-ad-player-sdk id="player3" videoid="jNQXAC9IVRw" position="center" width="400" height="225"></video-ad-player-sdk>
+    
+    <video-ad-player-sdk id="player4" videoid="dQw4w9WgXcQ" position="bottom left" size="small"></video-ad-player-sdk>
+    
+    <video-ad-player-sdk id="player5" videoid="9bZkp7q19f0" position="top right" size="small"></video-ad-player-sdk>
+
+    <script>
+        // Event listeners for all players
+        document.addEventListener('DOMContentLoaded', () => {
+            const players = document.querySelectorAll('video-ad-player-sdk');
+            
+            players.forEach((player, index) => {
+                player.addEventListener('ready', (event) => {
+                    console.log(`Player ${index + 1} ready:`, event.detail);
+                    updateStatus(`status${index + 1}`, '✅ Player ready and functional', 'success');
+                });
+
+                player.addEventListener('close', () => {
+                    console.log(`Player ${index + 1} closed`);
+                    updateStatus(`status${index + 1}`, '⚠️ Player was closed', 'error');
+                });
+
+                player.addEventListener('error', (event) => {
+                    console.error(`Player ${index + 1} error:`, event.detail);
+                    updateStatus(`status${index + 1}`, `❌ Error: ${event.detail.message}`, 'error');
+                });
+            });
+        });
+
+        // Control functions
+        function playPlayer1() {
+            document.getElementById('player1').play();
+        }
+
+        function pausePlayer1() {
+            document.getElementById('player1').pause();
+        }
+
+        function closePlayer1() {
+            document.getElementById('player1').close();
+        }
+
+        function playPlayer2() {
+            document.getElementById('player2').play();
+        }
+
+        function pausePlayer2() {
+            document.getElementById('player2').pause();
+        }
+
+        function closePlayer2() {
+            document.getElementById('player2').close();
+        }
+
+        function playPlayer3() {
+            document.getElementById('player3').play();
+        }
+
+        function pausePlayer3() {
+            document.getElementById('player3').pause();
+        }
+
+        function closePlayer3() {
+            document.getElementById('player3').close();
+        }
+
+        function playPlayer4() {
+            document.getElementById('player4').play();
+        }
+
+        function playPlayer5() {
+            document.getElementById('player5').play();
+        }
+
+        function pauseAllPlayers() {
+            document.querySelectorAll('video-ad-player-sdk').forEach(player => {
+                player.pause();
+            });
+        }
+
+        function updateStatus(elementId, message, type) {
+            const statusElement = document.getElementById(elementId);
+            if (statusElement) {
+                statusElement.textContent = message;
+                statusElement.className = `status ${type}`;
+            }
+        }
+
+        // Test SDK availability
+        setTimeout(() => {
+            if (typeof VideoAdPlayerSDK !== 'undefined') {
+                console.log('✅ Web Component registered successfully');
+            } else {
+                console.error('❌ Web Component not registered');
+            }
+        }, 100);
+    </script>
+</body>
+</html>

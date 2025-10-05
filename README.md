@@ -33,6 +33,38 @@ npm install video-ad-player-sdk
 
 ## Quick Start
 
+### 🆕 Web Component Usage (HTML Tags):
+```html
+<!-- Include the SDK -->
+<script src="https://unpkg.com/video-ad-player-sdk@latest/dist/vanilla.iife.js"></script>
+
+<!-- Use simple HTML tags - no JavaScript needed! -->
+<video-ad-player-sdk 
+    videoid="HfUGeWXS-bE" 
+    position="bottom right"
+    size="medium">
+</video-ad-player-sdk>
+
+<!-- Multiple players with different configurations -->
+<video-ad-player-sdk 
+    videourl="https://example.com/video.mp4" 
+    position="top left"
+    size="small">
+</video-ad-player-sdk>
+```
+
+**Available Attributes:**
+- `videoid` - YouTube video ID
+- `videourl` - Direct video URL  
+- `playbackid` - Mux/HLS playback ID
+- `position` - "top/bottom + left/right/center" or "center"
+- `size` - "small", "medium", "large", or "custom"
+- `width` - Custom width (when size="custom")
+- `height` - Custom height (when size="custom") 
+- `muted` - "true" or "false"
+- `closeable` - "true" or "false"
+- `zindex` - CSS z-index value
+
 ### React/TypeScript Usage:
 ```typescript
 import { createVideoAdPlayer } from 'video-ad-player-sdk';
@@ -77,6 +109,34 @@ player.close();
     </script>
 </body>
 </html>
+```
+
+### Web Component Events & JavaScript API:
+```html
+<script>
+// Listen to player events
+const player = document.querySelector('video-ad-player-sdk');
+
+player.addEventListener('ready', (event) => {
+    console.log('Player ready:', event.detail.player);
+});
+
+player.addEventListener('close', () => {
+    console.log('Player was closed');
+});
+
+player.addEventListener('error', (event) => {
+    console.error('Player error:', event.detail);
+});
+
+// Control the player programmatically
+player.play();                    // Start playing
+player.pause();                   // Pause playback
+player.close();                   // Close the player
+player.setVolume(0.5);           // Set volume (0-1)
+player.seek(30);                 // Seek to 30 seconds
+player.getPlayer();              // Get underlying player instance
+</script>
 ```
 
 ## Configuration Options
