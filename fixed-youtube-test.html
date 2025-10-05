@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fixed YouTube Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 Fixed YouTube Test</h1>
+        <p><strong>Testing Video ID:</strong> HfUGeWXS-bE</p>
+        <p><strong>Full YouTube URL:</strong> https://www.youtube.com/watch?v=HfUGeWXS-bE</p>
+        
+        <div class="status info">
+            <strong>Note:</strong> The "ERR_BLOCKED_BY_CLIENT" errors are normal - they're just ad blockers blocking YouTube ads. The video should still work!
+        </div>
+        
+        <div>
+            <button onclick="testYouTube()">Test YouTube Video</button>
+            <button onclick="testDirectVideo()">Test Direct Video (Fallback)</button>
+            <button onclick="closePlayer()">Close Player</button>
+        </div>
+        
+        <div id="status"></div>
+        
+        <div>
+            <h3>Fixed Code Example:</h3>
+            <pre>
+const player = createVideoAdPlayer({
+    videoId: 'HfUGeWXS-bE',
+    position: 'bottom-right',
+    size: 'medium',
+    closeable: true,
+    onError: (error) => {
+        console.log('Video error handled:', error);
+        // You can show a fallback video here
+    }
+});
+            </pre>
+        </div>
+        
+        <div>
+            <h3>YouTube URL Parameters:</h3>
+            <pre id="url-display"></pre>
+        </div>
+    </div>
+
+    <!-- Include the SDK -->
+    <script src="./src/vanilla/index.js"></script>
+    
+    <script>
+        let currentPlayer = null;
+        
+        // Show the generated YouTube URL
+        const videoId = 'HfUGeWXS-bE';
+        const youtubeUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&enablejsapi=1&controls=1&rel=0&modestbranding=1&fs=1&cc_load_policy=0&iv_load_policy=3`;
+        document.getElementById('url-display').textContent = youtubeUrl;
+        
+        function testYouTube() {
+            showStatus('Creating YouTube player...', 'info');
+            
+            try {
+                currentPlayer = createVideoAdPlayer({
+                    videoId: 'HfUGeWXS-bE',
+                    position: 'bottom-right',
+                    size: 'medium',
+                    closeable: true,
+                    onClose: () => {
+                        currentPlayer = null;
+                        showStatus('YouTube player closed', 'success');
+                    },
+                    onError: (error) => {
+                        showStatus(`YouTube error: ${error.message}`, 'warning');
+                        console.warn('YouTube error (this is normal):', error);
+                    }
+                });
+                
+                showStatus('YouTube video should be playing now! (Ignore ad blocker warnings)', 'success');
+            } catch (error) {
+                showStatus(`Error: ${error.message}`, 'error');
+                console.error('YouTube test error:', error);
+            }
+        }
+        
+        function testDirectVideo() {
+            showStatus('Creating direct video player...', 'info');
+            
+            try {
+                currentPlayer = createVideoAdPlayer({
+                    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+                    position: 'center',
+                    size: 'large',
+                    closeable: true,
+                    muted: true,
+                    onClose: () => {
+                        currentPlayer = null;
+                        showStatus('Direct video player closed', 'success');
+                    }
+                });
+                
+                showStatus('Direct video should be playing now!', 'success');
+            } catch (error) {
+                showStatus(`Error: ${error.message}`, 'error');
+                console.error('Direct video test error:', error);
+            }
+        }
+        
+        function closePlayer() {
+            if (currentPlayer) {
+                currentPlayer.close();
+                currentPlayer = null;
+                showStatus('Player closed', 'success');
+            } else {
+                showStatus('No player to close', 'warning');
+            }
+        }
+        
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        }
+        
+        // Check if SDK is loaded
+        window.addEventListener('load', () => {
+            if (typeof createVideoAdPlayer === 'function') {
+                showStatus('✅ SDK loaded successfully! Ready to test.', 'success');
+            } else {
+                showStatus('❌ SDK not loaded. Check the script path.', 'error');
+            }
+        });
+        
+        // Handle any uncaught errors
+        window.addEventListener('error', (event) => {
+            if (event.message.includes('debug')) {
+                console.warn('Debug error caught and ignored:', event.message);
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

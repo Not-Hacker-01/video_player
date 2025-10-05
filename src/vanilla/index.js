@@ -45,7 +45,7 @@ class VideoAdPlayerVanilla {
       this.videoSrc = `https://stream.mux.com/${this.config.playbackId}.m3u8`;
       this.videoType = 'hls';
     } else if (this.config.videoId) {
-      this.videoSrc = `https://www.youtube.com/embed/${this.config.videoId}?autoplay=1&mute=1&loop=1&playlist=${this.config.videoId}`;
+      this.videoSrc = `https://www.youtube.com/embed/${this.config.videoId}?autoplay=1&mute=1&loop=1&playlist=${this.config.videoId}&enablejsapi=1&controls=1&rel=0&modestbranding=1&fs=1&cc_load_policy=0&iv_load_policy=3`;
       this.videoType = 'youtube';
     } else {
       throw new Error('No video source provided. Please provide videoId, playbackId, or videoUrl');
@@ -180,17 +180,21 @@ class VideoAdPlayerVanilla {
     if (!this.video) return;
 
     this.video.addEventListener('loadeddata', () => {
-      this.video.play().catch(console.error);
+      this.video.play().catch((err) => {
+        console.warn('Video autoplay failed:', err);
+      });
     });
 
     this.video.addEventListener('ended', () => {
       this.video.currentTime = 0;
-      this.video.play().catch(console.error);
+      this.video.play().catch((err) => {
+        console.warn('Video replay failed:', err);
+      });
     });
 
-    this.video.addEventListener('error', () => {
+    this.video.addEventListener('error', (event) => {
       const error = new Error('Video playback error');
-      console.error(error);
+      console.error('Video error:', error, event);
       if (this.config.onError) {
         this.config.onError(error);
       }

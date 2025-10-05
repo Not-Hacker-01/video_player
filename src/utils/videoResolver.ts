@@ -12,7 +12,7 @@ export const resolveVideoUrl = (config: {
   }
 
   if (config.videoId) {
-    return `https://www.youtube.com/embed/${config.videoId}?autoplay=1&mute=1`;
+    return `https://www.youtube.com/embed/${config.videoId}?autoplay=1&mute=1&loop=1&playlist=${config.videoId}&enablejsapi=1&controls=1&rel=0&modestbranding=1&fs=1&cc_load_policy=0&iv_load_policy=3`;
   }
 
   throw new Error('No video source provided. Please provide videoId, playbackId, or videoUrl');

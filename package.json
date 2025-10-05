@@ -1,6 +1,6 @@
 {
   "name": "video-ad-player-sdk",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "A powerful, customizable video ad player SDK for React applications with support for YouTube, direct URLs, and HLS streams",
   "type": "module",
   "main": "./dist/index.js",

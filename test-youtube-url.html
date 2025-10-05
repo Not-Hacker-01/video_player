@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube URL Test</title>
+</head>
+<body>
+    <h1>YouTube URL Test</h1>
+    <p>Testing YouTube video ID: HfUGeWXS-bE</p>
+    
+    <div id="url-output"></div>
+    
+    <script>
+        // Test the URL generation logic
+        const videoId = 'HfUGeWXS-bE';
+        const youtubeUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&enablejsapi=1&controls=1&rel=0&modestbranding=1`;
+        
+        document.getElementById('url-output').innerHTML = `
+            <p><strong>Generated YouTube URL:</strong></p>
+            <p><a href="${youtubeUrl}" target="_blank">${youtubeUrl}</a></p>
+            <p><strong>Expected:</strong> Video should autoplay, be muted, loop, and have minimal branding</p>
+        `;
+        
+        // Test if the URL is valid
+        console.log('YouTube URL:', youtubeUrl);
+        console.log('Video ID:', videoId);
+        console.log('URL should work for embedding');
+    </script>
+</body>
+</html>

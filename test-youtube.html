@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Test - Video Ad Player SDK</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .test-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .test-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .test-btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+        
+        .test-btn.active {
+            background: #28a745;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .video-info {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 YouTube Test - Video Ad Player SDK</h1>
+        <p class="subtitle">Testing YouTube video: HfUGeWXS-bE</p>
+        
+        <div class="video-info">
+            <h3>📹 Test Video Information</h3>
+            <p><strong>YouTube ID:</strong> HfUGeWXS-bE</p>
+            <p><strong>Full URL:</strong> https://www.youtube.com/watch?v=HfUGeWXS-bE</p>
+            <p><strong>Expected:</strong> Video should play automatically in a reels-style player</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>🧪 Test Different Positions</h3>
+            <p>Click any button to test the YouTube video in different positions:</p>
+            
+            <div class="test-buttons">
+                <button class="test-btn" onclick="testYouTube('bottom-right', 'medium')">Bottom Right</button>
+                <button class="test-btn" onclick="testYouTube('bottom-left', 'medium')">Bottom Left</button>
+                <button class="test-btn" onclick="testYouTube('top-right', 'small')">Top Right</button>
+                <button class="test-btn" onclick="testYouTube('top-left', 'small')">Top Left</button>
+                <button class="test-btn" onclick="testYouTube('center', 'large')">Center</button>
+                <button class="test-btn" onclick="testCustom()">Custom Position</button>
+                <button class="test-btn" onclick="closeAll()">Close All</button>
+            </div>
+            
+            <div class="code-block" id="code-display">
+// Click a test button to see the code
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📱 Test Different Sizes</h3>
+            <p>Test the YouTube video in different reel sizes:</p>
+            
+            <div class="test-buttons">
+                <button class="test-btn" onclick="testSize('small')">Small (200x360)</button>
+                <button class="test-btn" onclick="testSize('medium')">Medium (280x500)</button>
+                <button class="test-btn" onclick="testSize('large')">Large (360x640)</button>
+                <button class="test-btn" onclick="testSize('custom')">Custom (400x700)</button>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🎯 Usage Examples</h3>
+            
+            <h4>Basic YouTube Video:</h4>
+            <div class="code-block">
+const player = createVideoAdPlayer({
+  videoId: 'HfUGeWXS-bE',
+  position: 'bottom-right',
+  size: 'medium',
+  closeable: true
+});
+            </div>
+            
+            <h4>Center Position with Large Size:</h4>
+            <div class="code-block">
+const player = createVideoAdPlayer({
+  videoId: 'HfUGeWXS-bE',
+  position: 'center',
+  size: 'large',
+  closeable: true
+});
+            </div>
+            
+            <h4>Custom Position and Size:</h4>
+            <div class="code-block">
+const player = createVideoAdPlayer({
+  videoId: 'HfUGeWXS-bE',
+  position: 'custom',
+  size: 'custom',
+  width: 400,
+  height: 700,
+  customStyles: {
+    top: '100px',
+    right: '20px',
+    borderRadius: '20px'
+  }
+});
+            </div>
+        </div>
+        
+        <div id="status" class="status" style="display: none;"></div>
+    </div>
+
+    <!-- Include the Video Ad Player SDK -->
+    <script src="./src/vanilla/index.js"></script>
+    
+    <script>
+        let activePlayers = [];
+        
+        function testYouTube(position, size) {
+            updateCode(`YouTube Test - ${position} position`);
+            showStatus('Creating YouTube player...', 'success');
+            
+            try {
+                const player = createVideoAdPlayer({
+                    videoId: 'HfUGeWXS-bE',
+                    position: position,
+                    size: size,
+                    closeable: true,
+                    onClose: () => {
+                        removePlayer(player);
+                        showStatus('YouTube player closed', 'success');
+                    }
+                });
+                
+                activePlayers.push(player);
+                showStatus(`YouTube video playing in ${position} position`, 'success');
+            } catch (error) {
+                showStatus(`Error: ${error.message}`, 'error');
+                console.error('YouTube test error:', error);
+            }
+        }
+        
+        function testCustom() {
+            updateCode('Custom Position Test');
+            showStatus('Creating custom positioned player...', 'success');
+            
+            try {
+                const player = createVideoAdPlayer({
+                    videoId: 'HfUGeWXS-bE',
+                    position: 'custom',
+                    size: 'custom',
+                    width: 400,
+                    height: 700,
+                    closeable: true,
+                    customStyles: {
+                        top: '100px',
+                        right: '20px',
+                        borderRadius: '20px',
+                        boxShadow: '0 10px 30px rgba(0,0,0,0.3)'
+                    },
+                    onClose: () => {
+                        removePlayer(player);
+                        showStatus('Custom player closed', 'success');
+                    }
+                });
+                
+                activePlayers.push(player);
+                showStatus('Custom positioned YouTube video playing', 'success');
+            } catch (error) {
+                showStatus(`Error: ${error.message}`, 'error');
+                console.error('Custom test error:', error);
+            }
+        }
+        
+        function testSize(size) {
+            updateCode(`Size Test - ${size}`);
+            showStatus(`Testing ${size} size...`, 'success');
+            
+            try {
+                const player = createVideoAdPlayer({
+                    videoId: 'HfUGeWXS-bE',
+                    position: 'center',
+                    size: size,
+                    closeable: true,
+                    onClose: () => {
+                        removePlayer(player);
+                        showStatus(`${size} size test completed`, 'success');
+                    }
+                });
+                
+                activePlayers.push(player);
+                showStatus(`YouTube video playing in ${size} size`, 'success');
+            } catch (error) {
+                showStatus(`Error: ${error.message}`, 'error');
+                console.error('Size test error:', error);
+            }
+        }
+        
+        function closeAll() {
+            activePlayers.forEach(player => {
+                if (player && player.close) {
+                    player.close();
+                }
+            });
+            activePlayers = [];
+            updateCode('All players closed');
+            showStatus('All players closed', 'success');
+        }
+        
+        function removePlayer(player) {
+            const index = activePlayers.indexOf(player);
+            if (index > -1) {
+                activePlayers.splice(index, 1);
+            }
+        }
+        
+        function updateCode(text) {
+            document.getElementById('code-display').textContent = text;
+        }
+        
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+            statusDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Auto-test on page load
+        window.addEventListener('load', () => {
+            showStatus('SDK loaded successfully! Ready to test YouTube videos.', 'success');
+        });
+    </script>
+</body>
+</html>
